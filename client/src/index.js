@@ -1,13 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+import { Auth0Provider } from "@auth0/auth0-react";
+import { ChakraProvider } from "@chakra-ui/react";
+import onRedirectCallback from "./util/util.jsx";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Auth0Provider
+      domain="dev-banbcxclca4k625t.us.auth0.com"
+      clientId="Xt9uOHkhHClCV77W0w1FgkQky2WRWqB8"
+      redirectUri={window.location.origin}
+      onRedirectCallback={onRedirectCallback}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
+    >
+      <BrowserRouter>
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
+      </BrowserRouter>
+    </Auth0Provider>
   </React.StrictMode>
 );
 
