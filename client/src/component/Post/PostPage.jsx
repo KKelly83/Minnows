@@ -34,14 +34,11 @@ export default function PostPage() {
   };
 
   async function handlePostSubmit() {
-    try {
       const message = await submitPost({ title, content });
       alert(message);
       const fetchedData = await fetchPosts();
       setPosts(fetchedData);
-    } catch (error) {
-      alert('Error creating post: ${error.message}');
-    }
+      setPost({ title: "", content: ""});
   };
 
  
@@ -55,7 +52,6 @@ export default function PostPage() {
               <Icon as={IoSearchSharp} />
             </InputLeftElement>
             <Input
-
               type="text"
               placeholder="Search by author name, title content"
             />
@@ -87,7 +83,7 @@ export default function PostPage() {
             value={title}
             maxLength={"30"}
             minLength={"1"}
-            onChange={handlePostChange}
+            onChange={e => setPost({...post, title: e.target.value})}
           />
         </InputGroup>
         <Flex mt="4">
@@ -97,7 +93,7 @@ export default function PostPage() {
               value={content}
               maxLength={"300"}
               minLength={"1"}
-              onChange={handlePostChange}
+              onChange={e => setPost({...post, content: e.target.value})}
             />
           </InputGroup>
           <Button onClick={handlePostSubmit} ml="4">Post</Button>

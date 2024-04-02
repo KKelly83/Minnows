@@ -24,14 +24,10 @@ export async function submitPost({ title, content }) {
     }
 
     try {
-        const { data, error } = await supabase
+        const data = await supabase
             .from('posts')
             .insert([{ title: title, body: content }]).single();
         
-
-        if (error) {
-            throw error;
-        }
         if (data) {
             await fetchPosts();
             return "Post created successfully.";
