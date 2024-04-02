@@ -45,6 +45,12 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.24.3",
     "jest": "^27.5.1"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   }
 }

@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import PostItem from "./PostItem";
 import { supabase } from '../../db/supabase';
+import  {fetchPosts, submitPost}  from '../../api/postController';
 
 export default function PostPage() {
   const [posts, setPosts] = useState([]);
@@ -20,41 +21,27 @@ export default function PostPage() {
   const { title, content } = post;
 
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    async function fetchData() {
+      const fetchedData = await fetchPosts();
+      setPosts(fetchedData);
+    }
+    fetchData();
+  }, [fetchPosts]);
   
-  async function fetchPosts() {
-    const { data } = await supabase.from('posts').select('*');
-    setPosts(data);
+  const handlePostChange = e => {
+    const {name, value } = e.target;
+    setPost(prevState => ({ ...prevState, [name]: value }));
   };
 
-  const submitPost = async () => {
-    if (!title.trim() || !content.trim() ) {
-      alert("Please enter a title and some text for the post.");
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('posts')
-        .insert([{ title: title, body: content }]).single();
-        setPost({ title: "", content: ""});
-        fetchPosts();
-
-      if (error) {
-        throw error;
-      }
-
-      if (data) {
-        alert("Post created successfully!");
-        setPost({ title: "", content: ""});
-        fetchPosts();
-      }
-    } catch (error) {
-      alert(`Error creating post: ${error.message}`);
-      fetchPosts();
-    }
+  async function handlePostSubmit() {
+      const message = await submitPost({ title, content });
+      alert(message);
+      const fetchedData = await fetchPosts();
+      setPosts(fetchedData);
+      setPost({ title: "", content: ""});
   };
+
+ 
 
   return (
     <Box p={"1em"} overflowY="auto" position="relative" h={"100%"}>
@@ -65,7 +52,6 @@ export default function PostPage() {
               <Icon as={IoSearchSharp} />
             </InputLeftElement>
             <Input
-
               type="text"
               placeholder="Search by author name, title content"
             />
@@ -97,7 +83,7 @@ export default function PostPage() {
             value={title}
             maxLength={"30"}
             minLength={"1"}
-            onChange={e => setPost({ ...post, title: e.target.value })}
+            onChange={e => setPost({...post, title: e.target.value})}
           />
         </InputGroup>
         <Flex mt="4">
@@ -107,10 +93,10 @@ export default function PostPage() {
               value={content}
               maxLength={"300"}
               minLength={"1"}
-              onChange={e => setPost({ ...post, content: e.target.value })}
+              onChange={e => setPost({...post, content: e.target.value})}
             />
           </InputGroup>
-          <Button onClick={submitPost} ml="4">Post</Button>
+          <Button onClick={handlePostSubmit} ml="4">Post</Button>
         </Flex>
       </Flex>
     </Box>
