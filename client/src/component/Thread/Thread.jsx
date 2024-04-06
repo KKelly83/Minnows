@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IoSearchSharp } from "react-icons/io5";
+import { FaArrowLeft } from "react-icons/fa";
+
 import {
   Box,
   Heading,
@@ -13,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import ThreadItem from "./ThreadItem";
 import { fetchPosts, submitPost } from "../../api/threadController";
-import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import AddThread from "./AddThread";

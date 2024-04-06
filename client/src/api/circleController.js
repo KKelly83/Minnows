@@ -26,15 +26,15 @@ export async function submitCircles({ title, content }) {
   try {
     const data = await supabase
       .from("circles")
-      .insert([{ title: title, body: content }])
+      .insert([{ title: title, content: content, author_id: 1234 }])
       .single();
 
     if (data) {
       await fetchCircles();
-      return "Post created successfully.";
+      return "Circle created successfully.";
     }
   } catch (error) {
-    console.error("Error creating post: ${error}");
+    console.error(`Error creating post: ${error}`);
     throw error;
   }
 }

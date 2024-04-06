@@ -35,7 +35,7 @@ export async function submitPost({ title, content, circleId }) {
       .single();
 
     if (data) {
-      await fetchPosts();
+      await fetchPosts(circleId);
       return "Post created successfully.";
     }
   } catch (error) {
