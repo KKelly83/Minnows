@@ -5,7 +5,7 @@ const titleAlert = "Please enter a title between 1 and 30 characters.";
 const contentAlert = "Please enter text between 1 and 300 characters.";
 
 export async function fetchPosts() {
-  const { data } = await supabase.from("posts").select("*");
+  const { data } = await supabase.from("threads").select("*");
   return data;
 }
 
@@ -25,7 +25,7 @@ export async function submitPost({ title, content }) {
 
   try {
     const data = await supabase
-      .from("posts")
+      .from("threads")
       .insert([{ title: title, body: content }])
       .single();
 

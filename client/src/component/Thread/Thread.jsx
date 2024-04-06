@@ -11,22 +11,19 @@ import {
   Button,
   InputGroup,
   IconButton,
+  Text,
 } from "@chakra-ui/react";
 import ThreadItem from "./ThreadItem";
-import { supabase } from "../../db/supabase";
-import { fetchPosts, submitPost } from "../../api/postController";
+import { fetchPosts, submitPost } from "../../api/threadController";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import AddThread from "./AddThread";
 
 export default function PostPage() {
   const [posts, setPosts] = useState([]);
-  const [post, setPost] = useState({ title: "", content: "" });
-  const { title, content } = post;
   const navigate = useNavigate();
-
-  const goBack = () => {
-    navigate("/circle");
-  };
+  const { threadTitle } = useParams();
 
   useEffect(() => {
     async function fetchData() {
@@ -36,18 +33,16 @@ export default function PostPage() {
     fetchData();
   }, [fetchPosts]);
 
-  const handlePostChange = (e) => {
-    const { name, value } = e.target;
-    setPost((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  async function handlePostSubmit() {
+  async function handlePostSubmit(title, content) {
     const message = await submitPost({ title, content });
     alert(message);
     const fetchedData = await fetchPosts();
     setPosts(fetchedData);
-    setPost({ title: "", content: "" });
   }
+
+  const goBack = () => {
+    navigate("/circle");
+  };
 
   return (
     <Box p={"1em"} overflowY="auto" position="relative" h={"100%"}>
@@ -58,11 +53,14 @@ export default function PostPage() {
         size="sm"
         alignSelf="flex-start"
         position={"fixed"}
-        top={'1em'}
+        top={"1em"}
         left={"20vw"}
       />
       <Box mt={"2em"} mb={"2em"}>
-        <Heading>Name of the Thread</Heading>
+        <Flex justify={"space-between"} mb={"0.3em"}>
+          <Heading>{decodeURIComponent(threadTitle)}</Heading>
+          <AddThread handlePostSubmit={handlePostSubmit} />
+        </Flex>
 
         <InputGroup>
           <InputLeftElement pointerEvents="none">
@@ -75,7 +73,7 @@ export default function PostPage() {
         </InputGroup>
       </Box>
 
-      <VStack spacing={"1em"} overflowY="auto" h="75%" mt="3em" pb="10em">
+      <VStack spacing={"1em"} overflowY="auto" h="75%" mt="1em" pb="10em">
         {posts.map((post, index) => (
           <ThreadItem
             key={index}
@@ -85,39 +83,6 @@ export default function PostPage() {
           />
         ))}
       </VStack>
-      <Flex
-        direction="column"
-        position="fixed"
-        bottom="0"
-        left="20%"
-        right="0"
-        p="1em"
-        bg="white"
-      >
-        <InputGroup size="md">
-          <Input
-            placeholder="Title of the post"
-            value={title}
-            maxLength={"30"}
-            minLength={"1"}
-            onChange={(e) => setPost({ ...post, title: e.target.value })}
-          />
-        </InputGroup>
-        <Flex mt="4">
-          <InputGroup size="md">
-            <Input
-              placeholder="Content of the post"
-              value={content}
-              maxLength={"300"}
-              minLength={"1"}
-              onChange={(e) => setPost({ ...post, content: e.target.value })}
-            />
-          </InputGroup>
-          <Button onClick={handlePostSubmit} ml="4">
-            Post
-          </Button>
-        </Flex>
-      </Flex>
     </Box>
   );
 }

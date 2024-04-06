@@ -49,12 +49,12 @@ export default function App() {
             element={isAuthenticated ? <Circle /> : <Homepage />}
           />
           <Route
-            path="/circle/thread"
+            path="/circle/thread/:threadTitle"
             element={isAuthenticated ? <Thread /> : <Homepage />}
           />
           <Route
             path="/circle/thread/post"
-            element={isAuthenticated ? <PostPage/> : <Homepage />}
+            element={isAuthenticated ? <PostPage /> : <Homepage />}
           />
         </Routes>
       </Box>
