@@ -6,8 +6,6 @@ import CircleItem from "./CircleItem";
 
 export default function Circle() {
   const [circles, setCircles] = useState([]);
-  const [circle, setCircle] = useState({ title: "", content: "" });
-  const { title, content } = circle;
 
   useEffect(() => {
     async function fetchData() {
@@ -26,6 +24,8 @@ export default function Circle() {
             authorName={circle.author_id}
             title={circle.title}
             content={circle.content}
+            id={circle.id}
+            date={circle.created_at}
           ></CircleItem>
         ))}
       </VStack>

@@ -8,10 +8,8 @@ import {
   VStack,
   InputLeftElement,
   Icon,
-  Button,
   InputGroup,
   IconButton,
-  Text,
 } from "@chakra-ui/react";
 import ThreadItem from "./ThreadItem";
 import { fetchPosts, submitPost } from "../../api/threadController";
@@ -23,20 +21,20 @@ import AddThread from "./AddThread";
 export default function PostPage() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
-  const { threadTitle } = useParams();
+  const { circleTitle, circleId } = useParams();
 
   useEffect(() => {
     async function fetchData() {
-      const fetchedData = await fetchPosts();
+      const fetchedData = await fetchPosts(circleId);
       setPosts(fetchedData);
     }
     fetchData();
   }, [fetchPosts]);
 
   async function handlePostSubmit(title, content) {
-    const message = await submitPost({ title, content });
+    const message = await submitPost({ title, content, circleId });
     alert(message);
-    const fetchedData = await fetchPosts();
+    const fetchedData = await fetchPosts(circleId);
     setPosts(fetchedData);
   }
 
@@ -58,7 +56,7 @@ export default function PostPage() {
       />
       <Box mt={"2em"} mb={"2em"}>
         <Flex justify={"space-between"} mb={"0.3em"}>
-          <Heading>{decodeURIComponent(threadTitle)}</Heading>
+          <Heading>{decodeURIComponent(circleTitle)}</Heading>
           <AddThread handlePostSubmit={handlePostSubmit} />
         </Flex>
 
@@ -80,6 +78,8 @@ export default function PostPage() {
             authorName={post.author_id}
             title={post.title}
             content={post.body}
+            circleId={circleId}
+            threadTitle={circleTitle}
           />
         ))}
       </VStack>

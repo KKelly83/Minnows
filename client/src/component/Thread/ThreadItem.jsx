@@ -11,16 +11,23 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
-
-export default function CircleItem({ authorName, title, content }) {
+export default function CircleItem({
+  authorName,
+  title,
+  content,
+  circleId,
+  threadTitle,
+}) {
   const navigate = useNavigate();
 
-  const handleViewThread = (id) => {
-    console.log("Viewing thread:", id);
-    navigate("/circle/thread/post");
+  const handleViewThread = (circleTitle, circleId) => {
+    navigate(
+      `/circle/thread/${encodeURIComponent(circleTitle)}/${encodeURIComponent(
+        circleId
+      )}/post`
+    );
   };
 
-  
   return (
     <Box
       w={"full"}
@@ -28,11 +35,9 @@ export default function CircleItem({ authorName, title, content }) {
       boxShadow={"lg"}
       borderRadius={"lg"}
       bg={"white"}
-      onClick={() => handleViewThread()}
+      onClick={() => handleViewThread(threadTitle, circleId)}
       _hover={{ cursor: "pointer" }}
     >
-      
-
       <Box display={"flex"}>
         <Avatar></Avatar>
         <Text mr={"1em"} fontSize={"1em"}>

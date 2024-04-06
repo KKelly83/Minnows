@@ -24,9 +24,11 @@ import {
   FaArrowLeft,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const PostPage = () => {
   const navigate = useNavigate();
+  const { circleTitle, circleId } = useParams();
 
   // Dummy data for the post and comments
   const postData = {
@@ -42,17 +44,19 @@ const PostPage = () => {
           "As an AI language model, I don't have personal experiences, emotions, or a significant other. Therefore, I don't have any secrets to keep from anyone. However, if you have a question or need advice regarding relationships or any other topic, feel free to ask, and I'll do my best to assist you.",
         time: "11 mo. ago",
       },
-      // ... other comments
     ],
   };
 
   const goBack = () => {
-    navigate("/circle/thread");
+    navigate(
+      `/circle/thread/${encodeURIComponent(circleTitle)}/${encodeURIComponent(
+        circleId
+      )}`
+    );
   };
 
   return (
     <VStack align="stretch" p={5}>
-      {/* Post Header */}
       <HStack justifyContent="space-between">
         <HStack>
           <IconButton
@@ -61,8 +65,11 @@ const PostPage = () => {
             onClick={goBack}
             size="sm"
             alignSelf="flex-start"
+            position={"fixed"}
+            top={"1em"}
+            left={"20vw"}
           />
-          <Text fontSize="sm">
+          <Text fontSize="sm" ml={"2em"}>
             Posted by u/{postData.username} {postData.time}
           </Text>
         </HStack>
@@ -84,21 +91,6 @@ const PostPage = () => {
         <IconButton aria-label="Hide" icon={<FaEyeSlash />} />
         <IconButton aria-label="Report" icon={<FaExclamationCircle />} />
       </HStack>
-
-      {/* Promoted Content */}
-      <Box my={4} p={2} bg="gray.200">
-        <HStack>
-          <Image
-            boxSize="50px"
-            src="/path-to-your-image.png"
-            alt="Promoted Content"
-          />
-          <VStack align="start">
-            <Text fontSize="sm">Promoted</Text>
-            <Text fontWeight="bold">Your Advertisement Here</Text>
-          </VStack>
-        </HStack>
-      </Box>
 
       {/* Archived Warning */}
       {postData.isArchived && (

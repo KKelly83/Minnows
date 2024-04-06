@@ -39,13 +39,13 @@ const AddThread = ({ handlePostSubmit }) => {
   return (
     <>
       <Button colorScheme="teal" onClick={onOpen}>
-        + New Post
+        + New Thread
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add a New Fish</ModalHeader>
+          <ModalHeader>Add a New Thread</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
@@ -53,7 +53,7 @@ const AddThread = ({ handlePostSubmit }) => {
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Fish Name"
+                placeholder="Thread Name"
               />
             </FormControl>
 
@@ -76,7 +76,7 @@ const AddThread = ({ handlePostSubmit }) => {
                   Save
                 </Button>
                 <Button colorScheme="blue" onClick={onSubmit}>
-                  Add a fish
+                  Add a Thread
                 </Button>
               </ButtonGroup>
             </Box>
