@@ -1,104 +1,146 @@
-import React, { useState, useEffect } from "react";
-import { IoSearchSharp } from "react-icons/io5";
+import React from "react";
 import {
   Box,
-  Heading,
-  Input,
-  Flex,
-  VStack,
-  InputLeftElement,
-  Icon,
+  Text,
   Button,
-  InputGroup 
+  VStack,
+  HStack,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Badge,
+  Divider,
+  Image,
 } from "@chakra-ui/react";
-import PostItem from "./PostItem";
-import { supabase } from '../../db/supabase';
-import  {fetchPosts, submitPost}  from '../../api/postController';
+import {
+  FaRegCommentAlt,
+  FaShare,
+  FaSave,
+  FaEyeSlash,
+  FaExclamationCircle,
+  FaChevronDown,
+  FaArrowLeft,
+} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-export default function PostPage() {
-  const [posts, setPosts] = useState([]);
-  const [post, setPost] = useState({ title: "", content: "" });
-  const { title, content } = post;
+const PostPage = () => {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    async function fetchData() {
-      const fetchedData = await fetchPosts();
-      setPosts(fetchedData);
-    }
-    fetchData();
-  }, [fetchPosts]);
-  
-  const handlePostChange = e => {
-    const {name, value } = e.target;
-    setPost(prevState => ({ ...prevState, [name]: value }));
+  // Dummy data for the post and comments
+  const postData = {
+    username: "[deleted]",
+    time: "11 months ago",
+    title: "What secret are you keeping from your significant other?",
+    body: "", // post body if needed
+    isArchived: true,
+    comments: [
+      {
+        username: "Wangzhaojun1314",
+        comment:
+          "As an AI language model, I don't have personal experiences, emotions, or a significant other. Therefore, I don't have any secrets to keep from anyone. However, if you have a question or need advice regarding relationships or any other topic, feel free to ask, and I'll do my best to assist you.",
+        time: "11 mo. ago",
+      },
+      // ... other comments
+    ],
   };
 
-  async function handlePostSubmit() {
-      const message = await submitPost({ title, content });
-      alert(message);
-      const fetchedData = await fetchPosts();
-      setPosts(fetchedData);
-      setPost({ title: "", content: ""});
+  const goBack = () => {
+    navigate("/circle/thread");
   };
-
- 
 
   return (
-    <Box p={"1em"} overflowY="auto" position="relative" h={"100%"}>
-       <Box mt={"1em"} mb={"2em"} position = "fixed" top = "0">
-          <Heading>Name of the Thread</Heading>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <Icon as={IoSearchSharp} />
-            </InputLeftElement>
-            <Input
-              type="text"
-              placeholder="Search by author name, title content"
-            />
-          </InputGroup>
-        </Box>
-       
-      <VStack spacing={"1em"} overflowY="auto" h="75%" mt="6em" pb="10em">
-        {posts.map((post, index) => (
-          <PostItem
-            key={index}
-            authorName={post.author_id}
-            title={post.title}
-            content={post.body}
+    <VStack align="stretch" p={5}>
+      {/* Post Header */}
+      <HStack justifyContent="space-between">
+        <HStack>
+          <IconButton
+            aria-label="Go back"
+            icon={<FaArrowLeft />}
+            onClick={goBack}
+            size="sm"
+            alignSelf="flex-start"
           />
+          <Text fontSize="sm">
+            Posted by u/{postData.username} {postData.time}
+          </Text>
+        </HStack>
+        <Badge colorScheme={postData.isArchived ? "red" : "green"}>
+          {postData.isArchived ? "Archived" : "Active"}
+        </Badge>
+      </HStack>
+
+      {/* Post Title */}
+      <Text fontWeight="bold" my={2}>
+        {postData.title}
+      </Text>
+
+      {/* Action Buttons */}
+      <HStack my={2}>
+        <IconButton aria-label="Comment" icon={<FaRegCommentAlt />} />
+        <IconButton aria-label="Share" icon={<FaShare />} />
+        <IconButton aria-label="Save" icon={<FaSave />} />
+        <IconButton aria-label="Hide" icon={<FaEyeSlash />} />
+        <IconButton aria-label="Report" icon={<FaExclamationCircle />} />
+      </HStack>
+
+      {/* Promoted Content */}
+      <Box my={4} p={2} bg="gray.200">
+        <HStack>
+          <Image
+            boxSize="50px"
+            src="/path-to-your-image.png"
+            alt="Promoted Content"
+          />
+          <VStack align="start">
+            <Text fontSize="sm">Promoted</Text>
+            <Text fontWeight="bold">Your Advertisement Here</Text>
+          </VStack>
+        </HStack>
+      </Box>
+
+      {/* Archived Warning */}
+      {postData.isArchived && (
+        <Box my={2} p={2} bg="yellow.100">
+          <Text fontSize="sm">
+            This thread is archived. New comments cannot be posted and votes
+            cannot be cast.
+          </Text>
+        </Box>
+      )}
+
+      {/* Sorting Options */}
+      <Menu>
+        <MenuButton as={Button} rightIcon={<FaChevronDown />}>
+          Sort By: Best
+        </MenuButton>
+        <MenuList>
+          <MenuItem>Best</MenuItem>
+          <MenuItem>New</MenuItem>
+          <MenuItem>Top</MenuItem>
+          {/* More sorting options */}
+        </MenuList>
+      </Menu>
+
+      <Divider my={4} />
+
+      {/* Comments Section */}
+      <VStack align="stretch" spacing={4}>
+        {postData.comments.map((comment, index) => (
+          <Box key={index} p={4} bg="gray.50">
+            <HStack justifyContent="space-between">
+              <Text fontSize="sm" fontWeight="bold">
+                {comment.username}
+              </Text>
+              <Text fontSize="sm">{comment.time}</Text>
+            </HStack>
+            <Text mt={2}>{comment.comment}</Text>
+          </Box>
         ))}
       </VStack>
-      <Flex
-        direction="column"
-        position="fixed"
-        bottom="0"
-        left="20%"
-        right="0"
-        p="1em"
-        bg = "white"
-      >
-        <InputGroup size="md">
-          <Input
-            placeholder="Title of the post"
-            value={title}
-            maxLength={"30"}
-            minLength={"1"}
-            onChange={e => setPost({...post, title: e.target.value})}
-          />
-        </InputGroup>
-        <Flex mt="4">
-          <InputGroup size="md">
-            <Input
-              placeholder="Content of the post"
-              value={content}
-              maxLength={"300"}
-              minLength={"1"}
-              onChange={e => setPost({...post, content: e.target.value})}
-            />
-          </InputGroup>
-          <Button onClick={handlePostSubmit} ml="4">Post</Button>
-        </Flex>
-      </Flex>
-    </Box>
+    </VStack>
   );
-}
+};
+
+export default PostPage;
