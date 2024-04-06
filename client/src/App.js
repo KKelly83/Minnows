@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -12,9 +12,45 @@ import Store from "./component/Store/Store.jsx";
 import Profile1 from "./component/Profile/Profile.jsx";
 import Circle from "./component/Circle/Circle.jsx";
 import Thread from "./component/Thread/Thread.jsx";
+import { supabase } from "./db/supabase";
 
 export default function App() {
-  const { isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, user } = useAuth0();
+  useEffect(() => {
+    const createUserInSupabase = async () => {
+      if (isAuthenticated && user) {
+        const numericIdentifier = user.sub.split("|")[1];
+        let { data: existingUser, error } = await supabase
+          .from("users")
+          .select("*")
+          .eq("sup", numericIdentifier)
+          .single();
+        console.log(error);
+
+        if (error && error.message.includes("multiple (or no) rows returned")) {
+          const { data, error: insertError } = await supabase
+            .from("users")
+            .insert([
+              {
+                sup: numericIdentifier,
+                coins: 0,
+                email: user.email,
+                name: user.name,
+                level: 1,
+              },
+            ]);
+
+          if (insertError) {
+            console.error("Error inserting new user:", insertError);
+          }
+        } else if (error) {
+          console.error("Error checking for existing user:", error);
+        }
+      }
+    };
+
+    createUserInSupabase();
+  }, [user, isAuthenticated]);
 
   return (
     <Box h={"100vh"} w={"100vw"} display={"flex"} bg={"white"}>

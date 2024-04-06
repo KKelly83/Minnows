@@ -6,8 +6,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function CircleItem({ authorName, title, content, id, date }) {
   const navigate = useNavigate();
-  const { user } = useAuth0();
-  console.log(user);
 
   const handleJoin = (event, id) => {
     event.stopPropagation();
