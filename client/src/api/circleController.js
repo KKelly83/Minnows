@@ -38,8 +38,3 @@ export async function submitCircles({ title, content }) {
     throw error;
   }
 }
-
-export default {
-  fetchCircles,
-  submitCircles,
-};

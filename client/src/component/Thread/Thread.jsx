@@ -30,7 +30,7 @@ export default function PostPage() {
       setPosts(fetchedData);
     }
     fetchData();
-  }, [fetchPosts]);
+  }, [circleId]);
 
   async function handlePostSubmit(title, content) {
     const message = await submitPost({ title, content, circleId });

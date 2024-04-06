@@ -2,12 +2,10 @@ import React from "react";
 import {
   Box,
   Heading,
-  Center,
   Avatar,
   Text,
   Button,
   ButtonGroup,
-  IconButton,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 

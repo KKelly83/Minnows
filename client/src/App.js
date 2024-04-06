@@ -10,7 +10,6 @@ import Homepage from "./component/Homepage/Homepage.jsx";
 import Fishes from "./component/Playgound/Fishes.jsx";
 import Store from "./component/Store/Store.jsx";
 import Profile1 from "./component/Profile/Profile.jsx";
-import Profile from "./component/Profile/Profile.jsx";
 import Circle from "./component/Circle/Circle.jsx";
 import Thread from "./component/Thread/Thread.jsx";
 

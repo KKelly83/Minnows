@@ -12,7 +12,6 @@ import {
   MenuList,
   Badge,
   Divider,
-  Image,
 } from "@chakra-ui/react";
 import {
   FaRegCommentAlt,

@@ -8,7 +8,6 @@ import {
   InputLeftElement,
   Icon,
   InputGroup,
-  IconButton,
 } from "@chakra-ui/react";
 import { fetchCircles, submitCircles } from "../../api/circleController";
 import { useState, useEffect } from "react";
@@ -26,7 +25,7 @@ export default function Circle() {
       setCircles(fetchedData);
     }
     fetchData();
-  }, [fetchCircles]);
+  }, []);
 
   async function handleCircleSubmit(title, content) {
     const message = await submitCircles({ title, content });

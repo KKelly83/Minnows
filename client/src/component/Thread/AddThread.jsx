@@ -15,7 +15,6 @@ import {
   Textarea,
   ButtonGroup,
 } from "@chakra-ui/react";
-import { PiNumberFiveDuotone } from "react-icons/pi";
 
 const AddThread = ({ handlePostSubmit }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

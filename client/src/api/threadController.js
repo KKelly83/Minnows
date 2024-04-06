@@ -39,12 +39,9 @@ export async function submitPost({ title, content, circleId }) {
       return "Post created successfully.";
     }
   } catch (error) {
-    console.error("Error creating post: ${error}");
+    console.error(`Error creating post: ${error}`);
     throw error;
   }
 }
 
-export default {
-  fetchPosts,
-  submitPost,
-};
+
