@@ -12,17 +12,29 @@ import {
 import { fetchCircles, submitCircles } from "../../api/circleController";
 import { useState, useEffect } from "react";
 import { IoSearchSharp } from "react-icons/io5";
-
 import CircleItem from "./CircleItem";
 import AddCircle from "./AddCircle";
+import { useAuth0 } from "@auth0/auth0-react";
+import { fetchUserName } from "../../api/userController";
 
 export default function Circle() {
   const [circles, setCircles] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const fetchedData = await fetchCircles();
-      setCircles(fetchedData);
+      // Fetch circles
+      const fetchedCircles = await fetchCircles();
+      // Fetch each author's name and add it to the circle object
+      const circlesWithAuthorNames = await Promise.all(
+        fetchedCircles.map(async (circle) => {
+          const authorName = await fetchUserName(circle.author_id);
+          console.log(circle.author_id);
+          console.log(authorName);
+          return { ...circle, authorName };
+        })
+      );
+      // Update state with the new data
+      setCircles(circlesWithAuthorNames);
     }
     fetchData();
   }, []);
@@ -58,7 +70,7 @@ export default function Circle() {
           {circles.map((circle, index) => (
             <CircleItem
               key={index}
-              authorName={circle.author_id}
+              authorName={circle.authorName[0].name}
               title={circle.title}
               content={circle.content}
               id={circle.id}

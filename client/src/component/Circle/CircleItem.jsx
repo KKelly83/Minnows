@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { FaThumbsUp } from "react-icons/fa";
 import { HStack, Box, Text, Button, IconButton } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { fetchUserName } from "../../api/userController";
+
 
 export default function CircleItem({ authorName, title, content, id, date }) {
   const navigate = useNavigate();
-
   const handleJoin = (event, id) => {
     event.stopPropagation();
   };

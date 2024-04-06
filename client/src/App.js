@@ -19,20 +19,18 @@ export default function App() {
   useEffect(() => {
     const createUserInSupabase = async () => {
       if (isAuthenticated && user) {
-        const numericIdentifier = user.sub.split("|")[1];
         let { data: existingUser, error } = await supabase
           .from("users")
           .select("*")
-          .eq("sup", numericIdentifier)
+          .eq("sub", user.sub)
           .single();
-        console.log(error);
 
         if (error && error.message.includes("multiple (or no) rows returned")) {
           const { data, error: insertError } = await supabase
             .from("users")
             .insert([
               {
-                sup: numericIdentifier,
+                sup: user.sub,
                 coins: 0,
                 email: user.email,
                 name: user.name,
