@@ -15,35 +15,41 @@ import { IoSearchSharp } from "react-icons/io5";
 import CircleItem from "./CircleItem";
 import AddCircle from "./AddCircle";
 import { useAuth0 } from "@auth0/auth0-react";
-import { fetchUserName } from "../../api/userController";
+import { fetchUserName, fetchUserId } from "../../api/userController";
 
 export default function Circle() {
   const [circles, setCircles] = useState([]);
+  const { user } = useAuth0();
+  const [userId, setUserId] = useState();
 
   useEffect(() => {
     async function fetchData() {
-      // Fetch circles
       const fetchedCircles = await fetchCircles();
-      // Fetch each author's name and add it to the circle object
+      const userid = await fetchUserId(user.sub);
+      setUserId(userid[0].user_id);
+
       const circlesWithAuthorNames = await Promise.all(
         fetchedCircles.map(async (circle) => {
           const authorName = await fetchUserName(circle.author_id);
-          console.log(circle.author_id);
-          console.log(authorName);
           return { ...circle, authorName };
         })
       );
-      // Update state with the new data
       setCircles(circlesWithAuthorNames);
     }
     fetchData();
   }, []);
 
   async function handleCircleSubmit(title, content) {
-    const message = await submitCircles({ title, content });
+    const message = await submitCircles({ title, content, userId });
     alert(message);
-    const fetchedData = await fetchCircles();
-    setCircles(fetchedData);
+    const fetchedCircles = await fetchCircles();
+    const circlesWithAuthorNames = await Promise.all(
+      fetchedCircles.map(async (circle) => {
+        const authorName = await fetchUserName(circle.author_id);
+        return { ...circle, authorName };
+      })
+    );
+    setCircles(circlesWithAuthorNames);
   }
 
   return (

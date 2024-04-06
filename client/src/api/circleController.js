@@ -9,7 +9,7 @@ export async function fetchCircles() {
   return data;
 }
 
-export async function submitCircles({ title, content }) {
+export async function submitCircles({ title, content, userId }) {
   //test if title or body is emtpy
   if (!title.trim() || !content.trim()) {
     throw new Error(emptyAlert);
@@ -26,7 +26,7 @@ export async function submitCircles({ title, content }) {
   try {
     const data = await supabase
       .from("circles")
-      .insert([{ title: title, content: content, author_id: 1234 }])
+      .insert([{ title: title, content: content, author_id: userId }])
       .single();
 
     if (data) {

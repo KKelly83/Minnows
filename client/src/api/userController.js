@@ -7,3 +7,11 @@ export async function fetchUserName(userId) {
     .eq("user_id", userId);
   return data;
 }
+
+export async function fetchUserId(sub) {
+  const { data } = await supabase
+    .from("users")
+    .select("user_id")
+    .eq("sub", sub);
+  return data;
+}

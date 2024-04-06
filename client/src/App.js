@@ -30,7 +30,7 @@ export default function App() {
             .from("users")
             .insert([
               {
-                sup: user.sub,
+                sub: user.sub,
                 coins: 0,
                 email: user.email,
                 name: user.name,
