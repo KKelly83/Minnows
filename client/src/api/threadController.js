@@ -4,7 +4,7 @@ const emptyAlert = "Please enter a title and some text for the post.";
 const titleAlert = "Please enter a title between 1 and 30 characters.";
 const contentAlert = "Please enter text between 1 and 300 characters.";
 
-export async function fetchPosts(circleId) {
+export async function fetchThreads(circleId) {
   const { data } = await supabase
     .from("threads")
     .select("*")
@@ -12,7 +12,7 @@ export async function fetchPosts(circleId) {
   return data;
 }
 
-export async function submitPost({ title, content, circleId }) {
+export async function submitThread({ title, content, circleId , userId}) {
   //test if title or body is emtpy
   if (!title.trim() || !content.trim()) {
     throw new Error(emptyAlert);
@@ -30,12 +30,12 @@ export async function submitPost({ title, content, circleId }) {
     const data = await supabase
       .from("threads")
       .insert([
-        { title: title, body: content, circle_id: circleId, author_id: 12345 },
+        { title: title, body: content, circle_id: circleId, author_id: userId },
       ])
       .single();
 
     if (data) {
-      await fetchPosts(circleId);
+      await fetchThreads(circleId);
       return "Post created successfully.";
     }
   } catch (error) {

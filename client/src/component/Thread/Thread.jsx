@@ -14,28 +14,36 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import ThreadItem from "./ThreadItem";
-import { fetchPosts, submitPost } from "../../api/threadController";
+import { fetchThreads, submitThread } from "../../api/threadController";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import AddThread from "./AddThread";
+import { useAuth0 } from "@auth0/auth0-react";
+import { fetchUserName, fetchUserId } from "../../api/userController";
+
 
 export default function PostPage() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const { circleTitle, circleId } = useParams();
+  const { user } = useAuth0();
+
+
 
   useEffect(() => {
     async function fetchData() {
-      const fetchedData = await fetchPosts(circleId);
+      const fetchedData = await fetchThreads(circleId);
       setPosts(fetchedData);
     }
     fetchData();
   }, [circleId]);
 
-  async function handlePostSubmit(title, content) {
-    const message = await submitPost({ title, content, circleId });
+ 
+
+  async function handleThreadSubmit(title, content) {
+    const message = await submitThread({ title, content, circleId });
     alert(message);
-    const fetchedData = await fetchPosts(circleId);
+    const fetchedData = await fetchThreads(circleId);
     setPosts(fetchedData);
   }
 
@@ -58,7 +66,7 @@ export default function PostPage() {
       <Box mt={"2em"} mb={"2em"}>
         <Flex justify={"space-between"} mb={"0.3em"}>
           <Heading>{decodeURIComponent(circleTitle)}</Heading>
-          <AddThread handlePostSubmit={handlePostSubmit} />
+          <AddThread handleThreadSubmit={handleThreadSubmit} />
         </Flex>
 
         <InputGroup>

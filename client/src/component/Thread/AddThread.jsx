@@ -16,14 +16,14 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 
-const AddThread = ({ handlePostSubmit }) => {
+const AddThread = ({ handleThreadSubmit }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
 
   const [description, setDescription] = useState("");
 
   const onSubmit = () => {
-    handlePostSubmit(name, description);
+    handleThreadSubmit(name, description);
     onClose();
     setName("");
     setDescription("");

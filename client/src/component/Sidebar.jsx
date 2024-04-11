@@ -26,7 +26,7 @@ export default function Sidebar() {
   const { logout } = useAuth0();
 
   const menuItems = [
-    { name: "Home", icon: AiTwotoneHome, path: "/home" },
+    { name: "My Circles", icon: AiTwotoneHome, path: "/home" },
     { name: "Profile", icon: CgProfile, path: "/profile" },
     { name: "Leaderboard", icon: MdOutlineLeaderboard, path: "/leaderboard" },
     { name: "Store", icon: FaStore, path: "/Store" },
