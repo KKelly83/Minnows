@@ -15,14 +15,15 @@ export default function CircleItem({
   content,
   circleId,
   threadTitle,
+  threadId,
 }) {
   const navigate = useNavigate();
 
-  const handleViewThread = (circleTitle, circleId) => {
+  const handleViewThread = (circleTitle, circleId, threadId) => {
     navigate(
       `/circle/thread/${encodeURIComponent(circleTitle)}/${encodeURIComponent(
         circleId
-      )}/post`
+      )}/${encodeURIComponent(threadId)}/post`
     );
   };
 
@@ -33,7 +34,7 @@ export default function CircleItem({
       boxShadow={"lg"}
       borderRadius={"lg"}
       bg={"white"}
-      onClick={() => handleViewThread(threadTitle, circleId)}
+      onClick={() => handleViewThread(threadTitle, circleId, threadId)}
       _hover={{ cursor: "pointer" }}
     >
       <Box display={"flex"}>

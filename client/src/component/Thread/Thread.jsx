@@ -21,30 +21,35 @@ import AddThread from "./AddThread";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchUserName, fetchUserId } from "../../api/userController";
 
-
-export default function PostPage() {
-  const [posts, setPosts] = useState([]);
+export default function ThreadPage() {
+  const [threads, setThreads] = useState([]);
   const navigate = useNavigate();
   const { circleTitle, circleId } = useParams();
   const { user } = useAuth0();
-
-
+  const [userId, setUserId] = useState();
 
   useEffect(() => {
     async function fetchData() {
-      const fetchedData = await fetchThreads(circleId);
-      setPosts(fetchedData);
+      const fetchedThreads = await fetchThreads(circleId);
+
+      const userid = await fetchUserId(user.sub);
+      setUserId(userid[0].user_id);
+      const threadWithAuthorNames = await Promise.all(
+        fetchedThreads.map(async (thread) => {
+          const authorName = await fetchUserName(thread.author_id);
+          return { ...thread, authorName };
+        })
+      );
+      setThreads(threadWithAuthorNames);
     }
     fetchData();
-  }, [circleId]);
-
- 
+  }, [circleId, user.sub, setUserId]);
 
   async function handleThreadSubmit(title, content) {
     const message = await submitThread({ title, content, circleId });
     alert(message);
     const fetchedData = await fetchThreads(circleId);
-    setPosts(fetchedData);
+    setThreads(fetchedData);
   }
 
   const goBack = () => {
@@ -81,14 +86,15 @@ export default function PostPage() {
       </Box>
 
       <VStack spacing={"1em"} overflowY="auto" h="75%" mt="1em" pb="10em">
-        {posts.map((post, index) => (
+        {threads.map((thread, index) => (
           <ThreadItem
             key={index}
-            authorName={post.author_id}
-            title={post.title}
-            content={post.body}
+            authorName={thread.authorName[0].name}
+            title={thread.title}
+            content={thread.body}
             circleId={circleId}
             threadTitle={circleTitle}
+            threadId={thread.thread_id}
           />
         ))}
       </VStack>

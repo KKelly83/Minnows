@@ -1,10 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaThumbsUp } from "react-icons/fa";
-import { HStack, Box, Text, Button, IconButton } from "@chakra-ui/react";
+import { HStack, Box, Text, Button, IconButton, Flex } from "@chakra-ui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchUserName } from "../../api/userController";
-
 
 export default function CircleItem({ authorName, title, content, id, date }) {
   const navigate = useNavigate();
@@ -30,19 +29,29 @@ export default function CircleItem({ authorName, title, content, id, date }) {
       onClick={() => handleViewThread(id, title)}
     >
       <HStack justifyContent="space-between">
-        <Text fontWeight="bold">{title}</Text>
+        <Text fontWeight="bold" fontSize={"lg"}>
+          {title}
+        </Text>
         <Text>Create by: {authorName}</Text>
       </HStack>
-      <HStack justifyContent="flex-end" spacing={4} mt={2}>
-        <Button size="sm" onClick={(event) => handleJoin(event, title)}>
-          Join
-        </Button>
-        <IconButton
-          aria-label="Like thread"
-          icon={<FaThumbsUp />}
-          onClick={(event) => handleLike(event, title)}
-        />
-      </HStack>
+      <Flex justify={"space-between"}>
+        <Box>
+          <Text>{content}</Text>
+          <Text>Created At: {date.substring(0, 10)}</Text>
+          <Text>? members</Text>
+        </Box>
+
+        <HStack justifyContent="flex-end" spacing={4} mt={2}>
+          <Button size="sm" onClick={(event) => handleJoin(event, title)}>
+            Join
+          </Button>
+          <IconButton
+            aria-label="Like thread"
+            icon={<FaThumbsUp />}
+            onClick={(event) => handleLike(event, title)}
+          />
+        </HStack>
+      </Flex>
     </Box>
   );
 }
