@@ -31,8 +31,8 @@ export default function ThreadPage() {
   useEffect(() => {
     async function fetchData() {
       const fetchedThreads = await fetchThreads(circleId);
-
       const userid = await fetchUserId(user.sub);
+
       setUserId(userid[0].user_id);
       const threadWithAuthorNames = await Promise.all(
         fetchedThreads.map(async (thread) => {
@@ -46,7 +46,7 @@ export default function ThreadPage() {
   }, [circleId, user.sub, setUserId]);
 
   async function handleThreadSubmit(title, content) {
-    const message = await submitThread({ title, content, circleId });
+    const message = await submitThread({ title, content, circleId, userId });
     alert(message);
     const fetchedData = await fetchThreads(circleId);
     setThreads(fetchedData);

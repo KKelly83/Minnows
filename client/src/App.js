@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import Leaderboard from "./component/Leaderboard/Leaderboard.jsx";
 import Sidebar from "./component/Sidebar";
-import PostPage from "./component/Post/PostPage.jsx";
+import PostPage from "./component/Post/Post.jsx";
 import Homepage from "./component/Homepage/Homepage.jsx";
 import Fishes from "./component/Playgound/Fishes.jsx";
 import Store from "./component/Store/Store.jsx";

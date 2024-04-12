@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Text,
@@ -14,10 +14,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import {
-  FaRegCommentAlt,
   FaShare,
-  FaSave,
-  FaEyeSlash,
   FaExclamationCircle,
   FaChevronDown,
   FaArrowLeft,
@@ -26,19 +23,22 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchUserId, fetchUserName } from "../../api/userController";
+import { fetchPosts, submitPost } from "../../api/postController";
+import PostItem from "./PostItem";
+import AddPost from "./AddPost";
 
 const PostPage = () => {
+  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const { circleTitle, circleId, threadId } = useParams();
   const [userId, setUserId] = useState();
   const { user } = useAuth0();
-  const [posts, setPosts] = useState();
+  const [threadAuthor, setThreadAuthor] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       const fetchedPosts = await fetchPosts(threadId);
       const userid = await fetchUserId(user.sub);
-      console.log(1);
       setUserId(userid[0].user_id);
       const postWithAuthorNames = await Promise.all(
         fetchedPosts.map(async (post) => {
@@ -49,10 +49,22 @@ const PostPage = () => {
       setPosts(postWithAuthorNames);
     }
     fetchData();
-  }, [user.sub, setUserId]);
+  }, [user.sub, setPosts, threadId]);
+
+  async function handlePostSubmit(title, content) {
+    const message = await submitPost({ title, content, threadId, userId });
+    alert(message);
+    const fetchedPosts = await fetchPosts(threadId);
+    const postsWithAuthorNames = await Promise.all(
+      fetchedPosts.map(async (post) => {
+        const authorName = await fetchUserName(post.author_id);
+        return { ...post, authorName };
+      })
+    );
+    setPosts(postsWithAuthorNames);
+  }
 
   const goBack = () => {
-    console.log(threadId);
     navigate(
       `/circle/thread/${encodeURIComponent(circleTitle)}/${encodeURIComponent(
         circleId
@@ -75,7 +87,7 @@ const PostPage = () => {
             left={"20vw"}
           />
           <Text fontSize="sm" ml={"2em"}>
-            Posted by u/ author name post.time
+            Posted by  post.time
           </Text>
         </HStack>
         <Badge colorScheme={"red"}>Hot</Badge>
@@ -84,10 +96,8 @@ const PostPage = () => {
         post.title
       </Text>
       <HStack my={2}>
-        <IconButton aria-label="Comment" icon={<FaRegCommentAlt />} />
+        <AddPost handlePostSubmit={handlePostSubmit} />
         <IconButton aria-label="Share" icon={<FaShare />} />
-        <IconButton aria-label="Save" icon={<FaSave />} />
-        <IconButton aria-label="Hide" icon={<FaEyeSlash />} />
         <IconButton aria-label="Report" icon={<FaExclamationCircle />} />
       </HStack>
       <Menu>
@@ -102,17 +112,17 @@ const PostPage = () => {
       </Menu>
       <Divider my={4} />
 
-      <VStack spacing={"1em"} overflowY="auto" h="75%" mt="1em" pb="10em">
+      <VStack align="stretch" spacing={4}>
         {posts.map((post, index) => (
-          <Box p={4} bg="gray.50" key={index}>
-            <HStack justifyContent="space-between">
-              <Text fontSize="sm" fontWeight="bold">
-                {post.authorName}
-              </Text>
-              <Text fontSize="sm">time</Text>
-            </HStack>
-            <Text mt={2}>{post.content}</Text>
-          </Box>
+          <PostItem
+            key={index}
+            authorName={post.authorName[0].name}
+            title={post.title}
+            content={post.content}
+            circleId={circleId}
+            threadTitle={circleTitle}
+            threadId={post.thread_id}
+          />
         ))}
       </VStack>
     </VStack>
