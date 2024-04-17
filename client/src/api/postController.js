@@ -11,15 +11,10 @@ export async function fetchPosts(threadId) {
 
 export async function submitPost({ title, content, threadId, userId }) {
   const emptyAlert = "Please enter a title and some text for the post.";
-  const titleAlert = "Please enter a title between 1 and 30 characters.";
   const contentAlert = "Please enter text between 1 and 300 characters.";
   //test if title or body is emtpy
-  if (!title.trim() || !content.trim()) {
+  if ( !content.trim()) {
     throw new Error(emptyAlert);
-  }
-  //test if title is appropriate length
-  if (title.length > 30 || title.length < 1) {
-    throw new Error(titleAlert);
   }
   //test content length
   if (content.length > 300 || content.length < 1) {

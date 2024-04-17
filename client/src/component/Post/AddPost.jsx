@@ -48,24 +48,17 @@ const AddPost = ({ handlePostSubmit }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add a New Thread</ModalHeader>
+          <ModalHeader>Reply</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Name of the Thread</FormLabel>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Thread Name"
-              />
-            </FormControl>
+            
 
             <FormControl mt={4}>
-              <FormLabel>Describe your Thread</FormLabel>
+              <FormLabel>Enter your response</FormLabel>
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Fish Description"
+                placeholder="Your reply goes here"
                 h={"10em"}
               />
             </FormControl>
@@ -79,7 +72,7 @@ const AddPost = ({ handlePostSubmit }) => {
                   Save
                 </Button>
                 <Button colorScheme="blue" onClick={onSubmit}>
-                  Add a Thread
+                  Reply
                 </Button>
               </ButtonGroup>
             </Box>

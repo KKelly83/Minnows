@@ -47,6 +47,7 @@ const PostPage = () => {
         })
       );
       setPosts(postWithAuthorNames);
+      console.log(posts);
     }
     fetchData();
   }, [user.sub, setPosts, threadId]);
@@ -87,7 +88,7 @@ const PostPage = () => {
             left={"20vw"}
           />
           <Text fontSize="sm" ml={"2em"}>
-            Posted by  post.time
+            Posted by post.time
           </Text>
         </HStack>
         <Badge colorScheme={"red"}>Hot</Badge>
@@ -111,7 +112,6 @@ const PostPage = () => {
         </MenuList>
       </Menu>
       <Divider my={4} />
-
       <VStack align="stretch" spacing={4}>
         {posts.map((post, index) => (
           <PostItem

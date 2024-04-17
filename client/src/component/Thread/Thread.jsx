@@ -49,7 +49,16 @@ export default function ThreadPage() {
     const message = await submitThread({ title, content, circleId, userId });
     alert(message);
     const fetchedData = await fetchThreads(circleId);
-    setThreads(fetchedData);
+    const threadsWithAuthorNames = await Promise.all(
+      fetchedData.map(async (thread) => {
+        const authorName = await fetchUserName(thread.author_id);
+        return { ...thread, authorName };
+      })
+    );
+    setThreads(threadsWithAuthorNames);
+
+
+   
   }
 
   const goBack = () => {
