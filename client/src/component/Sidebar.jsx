@@ -26,16 +26,15 @@ export default function Sidebar() {
   const { logout } = useAuth0();
 
   const menuItems = [
-    { name: "Home", icon: AiTwotoneHome, path: "/home" },
+    { name: "My Circles", icon: AiTwotoneHome, path: "/home" },
     { name: "Profile", icon: CgProfile, path: "/profile" },
     { name: "Leaderboard", icon: MdOutlineLeaderboard, path: "/leaderboard" },
-    { name: "Post", icon: GiTalk, path: "/post" },
     { name: "Store", icon: FaStore, path: "/Store" },
+    { name: "Circle", icon: "", path: "/circle" },
   ];
 
   const handleItemClick = (name, path) => {
     setSelected(name);
-    navigate(path);
     if (name !== "Logout") {
       navigate(path);
     } else {
