@@ -15,17 +15,19 @@ import {
   Textarea,
   ButtonGroup,
   IconButton,
+  HStack,
+  Text,
 } from "@chakra-ui/react";
 import { FaRegCommentAlt } from "react-icons/fa";
 
-const AddPost = ({ handlePostSubmit }) => {
+const AddComment = ({ handleCommentSubmit }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [name, setName] = useState("");
 
   const [description, setDescription] = useState("");
 
   const onSubmit = () => {
-    handlePostSubmit(name, description);
+    handleCommentSubmit(name, description);
     onClose();
     setName("");
     setDescription("");
@@ -39,11 +41,19 @@ const AddPost = ({ handlePostSubmit }) => {
 
   return (
     <>
-      <IconButton
-        aria-label="Comment"
-        icon={<FaRegCommentAlt />}
-        onClick={onOpen}
-      />
+      <Box onClick={onOpen} display="inline-flex" alignItems={"center"} cursor="pointer">
+      
+        <IconButton
+          aria-label="Comment"
+          icon={<FaRegCommentAlt />}
+          
+        />
+        <Text ml = {2}>
+          Add new comment
+        </Text>
+      </Box>
+   
+      
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -83,4 +93,4 @@ const AddPost = ({ handlePostSubmit }) => {
   );
 };
 
-export default AddPost;
+export default AddComment;

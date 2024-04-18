@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import Leaderboard from "./component/Leaderboard/Leaderboard.jsx";
 import Sidebar from "./component/Sidebar";
-import PostPage from "./component/Post/Post.jsx";
+import PostPage from "./component/Post/Comment.jsx";
 import Homepage from "./component/Homepage/Homepage.jsx";
 import Fishes from "./component/Playgound/Fishes.jsx";
 import Store from "./component/Store/Store.jsx";
@@ -86,7 +86,7 @@ export default function App() {
             element={isAuthenticated ? <Thread /> : <Homepage />}
           />
           <Route
-            path="/circle/thread/:circleTitle/:circleId/:threadId/post"
+            path="/circle/thread/:circleTitle/:circleId/:threadId/:threadTitle/:threadContent/:threadAuthor/post"
             element={isAuthenticated ? <PostPage /> : <Homepage />}
           />
         </Routes>
