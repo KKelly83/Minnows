@@ -3,10 +3,12 @@ import { FaThumbsUp } from "react-icons/fa";
 import { HStack, Box, Text, Button, IconButton, Flex } from "@chakra-ui/react";
 import { joinCircle } from "../../api/circleController";
 
+
 export default function CircleItem({ authorName, title, content, id, date, curUser }) {
-  const handleJoin = (event, id) => {
-    joinCircle(id, curUser);
-  };
+  async function handleJoin (event, id) {
+    const data =  await joinCircle(id, curUser);
+    alert(data);
+  }
   const handleLike = (event, id) => {
     event.stopPropagation();
   };

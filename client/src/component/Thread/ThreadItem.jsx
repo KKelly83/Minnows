@@ -23,7 +23,7 @@ export default function CircleItem({
 
   const handleViewThread = (circleTitle, circleId, threadId, threadTitle, threadContent, authorName) => {
     console.log(authorName);
-    navigate(`/circle/thread/${encodeURIComponent(circleTitle)}/${encodeURIComponent(circleId)}/${encodeURIComponent(threadId)}/${encodeURIComponent(threadTitle)}/${encodeURIComponent(threadContent)}/${encodeURIComponent(authorName)}/post`);
+    navigate(`/home/thread/${encodeURIComponent(circleTitle)}/${encodeURIComponent(circleId)}/${encodeURIComponent(threadId)}/${encodeURIComponent(threadTitle)}/${encodeURIComponent(threadContent)}/${encodeURIComponent(authorName)}/post`);
   };
 
   return (

@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChakraProvider, Box, Button, Text } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
-import { fetchCircles } from "../../api/circleController";
-import { useAuth0 } from "@auth0/auth0-react";
-import { fetchUserName, fetchUserId } from "../../api/userController";
 import { useNavigate } from "react-router-dom";
 
 const GlobalStyles = css`
@@ -32,7 +29,7 @@ export default function FishItem({ title, id }) {
     const direction = Math.random() > 0.5 ? "swimRight" : "swimLeft";
     const duration = 15
     const navigate = useNavigate();
-    const handleFishClicked = (id, title) => {
+    const handleFishClicked = (title, id) => {
         navigate(
         `/home/thread/${encodeURIComponent(title)}/${encodeURIComponent(id)}`
         );
@@ -48,7 +45,7 @@ export default function FishItem({ title, id }) {
             position="absolute"
             top={`${Math.random() * 80 + 10}%`}
             animation={`${direction} ${duration}s linear infinite`}
-            onClick={(event) => handleFishClicked(event, title)}
+            onClick={(event) => handleFishClicked(title, id)}
             w={0}
             h={0}
             >

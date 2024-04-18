@@ -39,8 +39,11 @@ export default function Fishes() {
     async function fetchData() {
       const userid = await fetchUserId(user.sub);
       setUserId(userid[0].user_id);
-      const fetchedCircles = await fetchUserCircles(userId);
-      setFishes(fetchedCircles);
+      if (userid[0].user_id) {
+        const fetchedCircles = await fetchUserCircles(userid[0].user_id);
+        setFishes(fetchedCircles);
+        console.log(fishes);
+      }
     }
     fetchData();
   }, []);

@@ -20,20 +20,32 @@ export async function fetchUserCircles(userId) {
 export async function joinCircle(circleId, userId) {
   console.log(userId, circleId);
   try {
-    const data = await supabase
-    .from("circleMember")
-    .insert([{ user_id: userId, circle_id: circleId }])
-    .single();
-
-    if (data) {
-      console.log("joined circle");
+    const { data, error } = await supabase
+      .from("circleMember")
+      .select("*")
+      .eq("circle_id", circleId)
+      .eq("user_id",userId);
+    if (data.length > 0) {
+      return "Already joined this circle";
+    } else {
+      throw error;
     }
   } catch (error) {
-    console.error(`Error joining circle: ${error}`);
-    throw error;
-  }
-  
-
+      try {
+        const data = await supabase
+        .from("circleMember")
+        .insert([{ user_id: userId, circle_id: circleId }])
+        .single();
+    
+        
+          console.log("joined circle");
+          return "Joined circle"
+        
+      } catch (error) {
+        console.error(`Error joining circle: ${error}`);
+        return "Error"
+      }
+    }
 }
 
 export async function submitCircles({ title, content, userId }) {

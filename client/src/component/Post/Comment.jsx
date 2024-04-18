@@ -69,7 +69,7 @@ const CommentPage = () => {
 
   const goBack = () => {
     navigate(
-      `/circle/thread/${encodeURIComponent(circleTitle)}/${encodeURIComponent(
+      `/home/thread/${encodeURIComponent(circleTitle)}/${encodeURIComponent(
         circleId
       )}`
     );
