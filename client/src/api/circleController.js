@@ -18,7 +18,6 @@ export async function fetchUserCircles(userId) {
 }
 
 export async function joinCircle(circleId, userId) {
-  console.log(userId, circleId);
   try {
     const { data, error } = await supabase
       .from("circleMember")
@@ -36,9 +35,6 @@ export async function joinCircle(circleId, userId) {
         .from("circleMember")
         .insert([{ user_id: userId, circle_id: circleId }])
         .single();
-    
-        
-          console.log("joined circle");
           return "Joined circle"
         
       } catch (error) {
