@@ -1,6 +1,6 @@
 import { supabase } from "../db/supabase";
 
-export async function fetchPosts(threadId) {
+export async function fetchComments(threadId) {
   const { data } = await supabase
     .from("posts")
     .select("*")
@@ -9,17 +9,12 @@ export async function fetchPosts(threadId) {
   return data;
 }
 
-export async function submitPost({ title, content, threadId, userId }) {
-  const emptyAlert = "Please enter a title and some text for the post.";
-  const titleAlert = "Please enter a title between 1 and 30 characters.";
+export async function submitComment({content, threadId, userId }) {
+  const emptyAlert = "Please enter some text for the comment.";
   const contentAlert = "Please enter text between 1 and 300 characters.";
-  //test if title or body is emtpy
-  if (!title.trim() || !content.trim()) {
+  //content is emtpy
+  if ( !content.trim()) {
     throw new Error(emptyAlert);
-  }
-  //test if title is appropriate length
-  if (title.length > 30 || title.length < 1) {
-    throw new Error(titleAlert);
   }
   //test content length
   if (content.length > 300 || content.length < 1) {
@@ -31,7 +26,6 @@ export async function submitPost({ title, content, threadId, userId }) {
       .from("posts")
       .insert([
         {
-          title: title,
           content: content,
           thread_id: threadId,
           author_id: userId,
@@ -40,11 +34,11 @@ export async function submitPost({ title, content, threadId, userId }) {
       .single();
 
     if (data) {
-      await fetchPosts(threadId);
-      return "Post created successfully.";
+      await fetchComments(threadId);
+      return "Comment created successfully.";
     }
   } catch (error) {
-    console.error(`Error creating post: ${error}`);
+    console.error(`Error creating comment: ${error}`);
     throw error;
   }
 }

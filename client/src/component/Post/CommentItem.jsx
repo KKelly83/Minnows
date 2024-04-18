@@ -3,9 +3,8 @@ import { Box, Text, HStack } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
 
-export default function PostItem({
+export default function CommentItem({
   authorName,
-  title,
   content,
   threadTitle,
   threadId,
@@ -18,7 +17,7 @@ export default function PostItem({
         <Text fontSize="xs" fontWeight="bold">
           {authorName}
         </Text>
-        <Text fontSize="sm">time</Text>
+        {/* <Text fontSize="sm">time</Text> */}
       </HStack>
       <Text mt={"0.5em"} fontSize={"md"}>
         {content}

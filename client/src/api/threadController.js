@@ -1,6 +1,6 @@
 import { supabase } from "../db/supabase";
 
-const emptyAlert = "Please enter a title and some text for the post.";
+const emptyAlert = "Please enter a title and some text for the thread.";
 const titleAlert = "Please enter a title between 1 and 30 characters.";
 const contentAlert = "Please enter text between 1 and 300 characters.";
 
@@ -36,10 +36,10 @@ export async function submitThread({ title, content, circleId , userId}) {
 
     if (data) {
       await fetchThreads(circleId);
-      return "Post created successfully.";
+      return "Thread created successfully.";
     }
   } catch (error) {
-    console.error(`Error creating post: ${error}`);
+    console.error(`Error creating thread: ${error}`);
     throw error;
   }
 }
