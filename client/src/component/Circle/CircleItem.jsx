@@ -1,22 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { FaThumbsUp } from "react-icons/fa";
 import { HStack, Box, Text, Button, IconButton, Flex } from "@chakra-ui/react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { fetchUserName } from "../../api/userController";
+import { joinCircle } from "../../api/circleController";
 
-export default function CircleItem({ authorName, title, content, id, date }) {
-  const navigate = useNavigate();
+export default function CircleItem({ authorName, title, content, id, date, curUser }) {
   const handleJoin = (event, id) => {
-    event.stopPropagation();
+    joinCircle(id, curUser);
   };
   const handleLike = (event, id) => {
     event.stopPropagation();
-  };
-  const handleViewThread = (id, title) => {
-    navigate(
-      `/circle/thread/${encodeURIComponent(title)}/${encodeURIComponent(id)}`
-    );
   };
   return (
     <Box
@@ -25,8 +17,6 @@ export default function CircleItem({ authorName, title, content, id, date }) {
       borderWidth="1px"
       borderRadius="md"
       color={"gray.800"}
-      _hover={{ cursor: "pointer" }}
-      onClick={() => handleViewThread(id, title)}
     >
       <HStack justifyContent="space-between">
         <Text fontWeight="bold" fontSize={"lg"}>
@@ -42,7 +32,7 @@ export default function CircleItem({ authorName, title, content, id, date }) {
         </Box>
 
         <HStack justifyContent="flex-end" spacing={4} mt={2}>
-          <Button size="sm" onClick={(event) => handleJoin(event, title)}>
+          <Button size="sm" onClick={(event) => handleJoin(event, id)}>
             Join
           </Button>
           <IconButton
