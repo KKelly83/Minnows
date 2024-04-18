@@ -62,7 +62,7 @@ export default function ThreadPage() {
   }
 
   const goBack = () => {
-    navigate("/circle");
+    navigate("/home");
   };
 
   return (

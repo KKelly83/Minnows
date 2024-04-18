@@ -81,6 +81,7 @@ export default function Circle() {
               content={circle.content}
               id={circle.id}
               date={circle.created_at}
+              curUser={userId}
             ></CircleItem>
           ))}
         </VStack>

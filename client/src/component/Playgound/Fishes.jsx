@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChakraProvider, Box, Button, Text } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
-import AddFish from "./AddFish";
+import { fetchCircles, fetchUserCircles } from "../../api/circleController";
+import { useAuth0 } from "@auth0/auth0-react";
+import { fetchUserName, fetchUserId } from "../../api/userController";
+import { useNavigate } from "react-router-dom";
+import FishItem from "./FishItem";
 
 const GlobalStyles = css`
   @keyframes swimRight {
@@ -23,19 +27,32 @@ const GlobalStyles = css`
   }
 `;
 
-export default function Fishes() {
-  const [fishes, setFishes] = useState([]);
 
-  const addFishToPond = (name, description) => {
-    const direction = Math.random() > 0.5 ? "swimRight" : "swimLeft";
-    const newFish = {
-      id: fishes.length,
-      name: name,
-      description: description,
-      duration: 15,
-      direction: direction,
-    };
-    setFishes([...fishes, newFish]);
+
+export default function Fishes() {
+  const navigate = useNavigate();
+  const [fishes, setFishes] = useState([]);
+  const { user } = useAuth0();
+  const [userId, setUserId] = useState();
+
+  useEffect(() => {
+    async function fetchData() {
+      const userid = await fetchUserId(user.sub);
+      setUserId(userid[0].user_id);
+      if (userid[0].user_id) {
+        const fetchedCircles = await fetchUserCircles(userid[0].user_id);
+        setFishes(fetchedCircles);
+        console.log(fishes);
+      }
+    }
+    fetchData();
+  }, []);
+
+
+  const handleViewCircles = (id, title) => {
+    navigate(
+      `/circle`
+    );
   };
 
   return (
@@ -48,41 +65,24 @@ export default function Fishes() {
         bg="blue.200"
         overflow="hidden"
       >
-        {fishes.map((fish) => (
-          <Button
-            fontSize={"5em"}
-            color={"blue.200"}
-            bg={"blue.200"}
-            _hover={{ fontSize: "6em", color: "black" }}
-            key={fish.id}
-            position="absolute"
-            top={`${Math.random() * 80 + 10}%`}
-            animation={`${fish.direction} ${fish.duration}s linear infinite`}
-            onClick={() =>
-              alert(`Thread: ${fish.name}! \r Description: ${fish.description}`)
-            }
-            w={0}
-            h={0}
+        {fishes.map((circle) => (
+          <FishItem
+            title={circle.title}
+            id={circle.id}
           >
-            <Box
-              transform={
-                fish.direction === "swimRight" ? "scaleX(-1)" : "scaleX(1)"
-              }
-            >
-              <Text
-                fontSize={"0.5em"}
-                transform={
-                  fish.direction === "swimRight" ? "scaleX(-1)" : "scaleX(1)"
-                }
-                mb={"-0.5em"}
-              >
-                {fish.name}
-              </Text>
-              🐟
-            </Box>
-          </Button>
+          </FishItem>
         ))}
-        <AddFish addFishToPond={addFishToPond} />
+        {/* <Box mb="1">
+          <Button 
+          onClick={handleViewCircles}
+          position="absolute"
+          bottom="2em"
+          right="40vw"
+          colorScheme="teal"
+          >
+            Join circles
+          </Button>
+        </Box> */}
       </Box>
     </ChakraProvider>
   );
