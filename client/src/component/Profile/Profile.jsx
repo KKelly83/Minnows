@@ -96,8 +96,8 @@ const Profile = ({ user }) => {
 
 // Sample usage of Profile component
 const userProfile = {
-  name: "Willy",
-  username: "willy831773",
+  name: "John Doe",
+  username: "Johndoe123",
   joinDate: "Joined February 2024",
   following: 0,
   followers: 0,

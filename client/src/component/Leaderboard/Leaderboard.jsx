@@ -29,7 +29,7 @@ export default function Leaderboard() {
         </Box>
         <Divider />
         <Stack direction="column" as="nav" spacing={0}>
-          <Player name="Willy Weak" places="1" score="192" />
+          <Player name="John Doe" places="1" score="192" />
           <Player
             name="Licker Dog"
             places="2"
@@ -43,11 +43,11 @@ export default function Leaderboard() {
             score="89"
             avatar="https://images.hobbydb.com/processed_uploads/subject_photo/subject_photo/image/37012/1518467482-3845-9947/Tom_20Cat_20_Tom_20And_20Jerry__large.jpg"
           />
-          <Player name="Willy Weak" places="5" score="53" />
-          <Player name="Willy Weak" places="5" score="41" />
-          <Player name="Willy Weak" places="6" score="20" />
-          <Player name="Willy Weak" places="7" score="10" />
-          <Player name="Willy Weak" places="8" score="1" />
+          <Player name="Jane Doe" places="5" score="53" />
+          <Player name="John Wick" places="5" score="41" />
+          <Player name="Adam Sandler" places="6" score="20" />
+          <Player name="Gabriel Iglesias" places="7" score="10" />
+          <Player name="Kevin Hart" places="8" score="1" />
         </Stack>
       </VStack>
     </Box>

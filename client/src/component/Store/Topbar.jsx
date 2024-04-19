@@ -1,44 +1,42 @@
-import React from "react";
-import { Flex, Box, Avatar, Text, Stack, Icon } from "@chakra-ui/react";
-import { FaGem, FaHeart, FaCoins } from "react-icons/fa";
+// Topbar component
+import React, { useState, useEffect } from "react";
+import { Flex, Avatar, Text, Stack, Icon } from "@chakra-ui/react";
+import { FaCoins } from "react-icons/fa";
+import { subscribeToCoinChanges } from "../../api/coinController";
 
-const Topbar = () => {
-  const user = {
-    name: "Firstname Lastname",
+const Topbar = ({ user_Id }) => {
+  const [user, setUser] = useState({
+    name: "John Doe",
     avatar: "",
-    coin: 40,
-    gem: 4,
-    heart: 3,
-  };
+    coin: 0
+  });
+
+ useEffect(() => {
+    const updateCoins = (newCoins) => {
+        setUser(prevState => ({
+            ...prevState,
+            coin: newCoins || 0
+        }));
+    };
+
+    if (user_Id) {
+        const unsubscribe = subscribeToCoinChanges(user_Id, updateCoins);
+        return () => unsubscribe();  // Cleanup subscription on component unmount or userId change
+    }
+}, [user_Id]);
 
   return (
-    <Flex
-      p="4"
-      justifyContent="end"
-      alignItems="center"
-      fontSize={"1.2em"}
-      fontWeight={"bold"}
-    >
-      <Flex alignItems="center" mr={"9em"}>
-        <Avatar name={user["name"]} src={user["avatar"]} />
+    <Flex p="4" justifyContent="end" alignItems="center" fontSize="1.2em" fontWeight="bold">
+      <Flex alignItems="center" mr="1em" color="yellow.400">
+        <Icon as={FaCoins} mr="2" />
+        <Text>{user.coin} Coins</Text>
+      </Flex>
+      <Flex alignItems="center" mr="1em">
+        <Avatar name={user.name} src={user.avatar} />
         <Text ml="0.2em" fontWeight="bold">
-          {user["name"]}
+          {user.name}
         </Text>
       </Flex>
-      <Stack direction="row" spacing="10" alignItems="center" mr={"5em"}>
-        <Flex alignItems="center" color={"yellow.400"}>
-          <Icon as={FaCoins} mr="2" />
-          <Text>{user["coin"]} Coins</Text>
-        </Flex>
-        <Flex alignItems="center" color={"blue.300"}>
-          <Icon as={FaGem} mr="2" />
-          <Text>{user["gem"]} Gems</Text>
-        </Flex>
-        <Flex alignItems="center" color={"red"}>
-          <Icon as={FaHeart} mr="2" />
-          <Text>{user["heart"]} Hearts</Text>
-        </Flex>
-      </Stack>
     </Flex>
   );
 };
