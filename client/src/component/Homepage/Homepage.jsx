@@ -1,9 +1,18 @@
 import React from "react";
-import { Box, Icon, Heading, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Icon,
+  Heading,
+  Image,
+  HStack,
+  Text,
+  Center,
+  Flex,
+} from "@chakra-ui/react";
 import fishSwimming from "../../assets/fishSwimming.mp4";
 import logo from "../../assets/logo.png";
 import Login from "./Login";
-
+import Title from "../Title";
 const BackgroundVideo = ({ src }) => {
   return (
     <Box
@@ -41,11 +50,14 @@ const BackgroundVideo = ({ src }) => {
           w={"full"}
           display={"flex"}
           mt={"20%"}
-          justifyContent={"center"}
           fontSize={"2.5em"}
           fontWeight={"bold"}
+          ml={"15vw"}
         >
-          <Box w>A new and fun way to succeed from your class!</Box>
+          <Box>
+            <Text>Minnows Making Your Class More &nbsp;</Text>
+          </Box>
+          <Title></Title>
         </Box>
         <Box display={"flex"} justifyContent={"center"}>
           <Login />
